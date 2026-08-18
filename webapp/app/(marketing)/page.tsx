@@ -178,14 +178,13 @@ export default async function HomePage() {
           User story INVEST criteria, scored line by line
         </h2>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          The{" "}
+          INVEST &mdash; Independent, Negotiable, Valuable, Estimable, Small, Testable &mdash; has been the
+          standard for good stories since Bill Wake{" "}
           <Link href="/faq#what-are-the-invest-criteria" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
-            what are the INVEST criteria
+            wrote the INVEST criteria
           </Link>{" "}
-          have been the standard for good stories since Bill Wake wrote them in 2003. Independent,
-          Negotiable, Valuable, Estimable, Small, Testable. Every agile coach can recite them. Almost no
-          team applies them consistently, because applying them by hand to forty stories in a refinement
-          session is not realistic.
+          in 2003. Every agile coach can recite them. Almost no team applies them consistently, because
+          applying them by hand to forty stories in a refinement session is not realistic.
         </p>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
           QPulse runs the INVEST criteria against your story in seconds and shows you the result per

@@ -127,9 +127,11 @@ export default function FaqPage() {
         </p>
 
         <div className="mt-10 space-y-10">
-          {FAQ_ITEMS.map((item) => (
+          {FAQ_ITEMS.map((item, index) => (
             <div key={item.id} id={item.id} className="scroll-mt-20">
-              <h2 className="text-xl font-bold tracking-tight">{item.question}</h2>
+              <h2 className="text-xl font-bold tracking-tight">
+                {index + 1}. {item.question}
+              </h2>
               <p className="mt-3 text-[rgb(var(--text-muted))]">{item.answer}</p>
               {item.id === "what-goes-on-a-definition-of-ready-checklist" && (
                 <p className="mt-3 text-sm">
@@ -178,7 +180,7 @@ export default function FaqPage() {
           ))}
 
           <div id="what-does-qpulse-do-with-my-data" className="scroll-mt-20">
-            <h2 className="text-xl font-bold tracking-tight">What does QPulse do with my data?</h2>
+            <h2 className="text-xl font-bold tracking-tight">13. What does QPulse do with my data?</h2>
             <p className="mt-3 text-[rgb(var(--text-muted))]">
               We store your account details and the stories and acceptance criteria you submit so your
               scores and history are there next time you sign in. Full detail on what we collect, why, how
@@ -191,7 +193,7 @@ export default function FaqPage() {
           </div>
 
           <div id="do-i-need-an-account" className="scroll-mt-20">
-            <h2 className="text-xl font-bold tracking-tight">Do I need an account?</h2>
+            <h2 className="text-xl font-bold tracking-tight">14. Do I need an account?</h2>
             <p className="mt-3 text-[rgb(var(--text-muted))]">
               Yes, and it is free. No credit card, no trial clock, no sales call. The account exists
               because scoring one story in isolation is not the point &mdash; QPulse saves every score you
