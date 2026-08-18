@@ -13,18 +13,18 @@ const PAGE_URL = `${SITE_URL}/free-ai-user-story-generator`;
 export const metadata: Metadata = {
   title: "Free AI User Story Generator with Acceptance Criteria",
   description:
-    "Generate agile user stories and Gherkin acceptance criteria with AI, then score them against INVEST before you commit. Free account, no credit card.",
+    "Paste a rough user story and QPulse's analyzer rewrites it, generates the acceptance criteria you skipped, and scores the result against INVEST and SMART. Free account, no credit card.",
   alternates: { canonical: PAGE_URL },
 };
 
 const OUTPUTS = [
   {
-    title: "The user story",
-    body: 'Written in standard agile form with a specific user, a concrete action, and a stated outcome. Not "a user" and not "use the app."',
+    title: "A rewritten user story",
+    body: 'Your draft, tightened into standard agile form with a specific persona, a concrete action, and a stated outcome. Not "a user" and not "use the app."',
   },
   {
-    title: "Gherkin acceptance criteria",
-    body: "Given, When, Then conditions covering the happy path plus the failure paths people forget. Unverified states, rate limits, timeouts, empty results.",
+    title: "Acceptance criteria, generated if you skipped them",
+    body: "Leave the acceptance criteria field blank and QPulse writes a happy-path and a failure-path Given/When/Then scenario for you.",
   },
   {
     title: "An INVEST score",
@@ -34,22 +34,18 @@ const OUTPUTS = [
     title: "A SMART check on the criteria",
     body: "Because acceptance criteria that cannot be measured are just wishes with better formatting.",
   },
-  {
-    title: "A rewrite",
-    body: "If the first pass falls short, you get the corrected version rather than a lecture about what is wrong with it.",
-  },
 ];
 
 const STEPS = [
-  { id: "step-1", title: "Describe the feature", body: 'One sentence is enough. "Customers need to filter search results by price" will do.' },
-  { id: "step-2", title: "Generate", body: "The user story generator tool writes the story and the acceptance criteria together, because splitting them is how they end up contradicting each other." },
-  { id: "step-3", title: "Score and refine", body: "See the INVEST result, take the rewrite, or edit and re score until it clears." },
+  { id: "step-1", title: "Paste", body: "Drop in whatever you have — a full story, a rough one-liner, or just a feature name. Leave acceptance criteria blank if you haven't written any yet." },
+  { id: "step-2", title: "Score", body: "The same analyzer that scores a finished story checks yours against INVEST and SMART and shows exactly what's missing." },
+  { id: "step-3", title: "Rewrite", body: "Take the corrected story and, if you left acceptance criteria blank, the scenarios QPulse drafted to fill that gap. Edit and re-score until it clears." },
 ];
 
 const INTEGRATIONS = [
-  { name: "Jira", body: "Copy the story and criteria straight into a ticket, or use QPulse for Jira AI user story creation and push the scored version across without retyping it." },
+  { name: "Jira", body: "Copy the rewritten story and criteria straight into a ticket." },
   { name: "Confluence", body: "Drop scored stories into your refinement page so the whole team sees the same standard." },
-  { name: "Miro", body: "Running story mapping on a board? Generate the story text in QPulse and paste it onto the card." },
+  { name: "Miro", body: "Running story mapping on a board? Paste the rewritten text onto the card." },
   { name: "Azure DevOps and Linear", body: "Same copy and paste flow. No plugin required." },
 ];
 
@@ -59,18 +55,18 @@ const SOFTWARE_HOWTO_SCHEMA = {
     {
       "@type": "SoftwareApplication",
       "@id": `${PAGE_URL}#software`,
-      name: "QPulse Free AI User Story Generator",
+      name: "QPulse User Story Analyzer — Rewrite and Acceptance Criteria Generation",
       url: PAGE_URL,
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web browser",
       description:
-        "Generate agile user stories and Gherkin acceptance criteria with AI, then score the result against INVEST and SMART before it enters your backlog.",
+        "The same QPulse analyzer used to score finished stories also rewrites a rough draft and generates acceptance criteria you didn't write, scored against INVEST and SMART.",
       featureList: [
-        "AI user story generation",
-        "Gherkin acceptance criteria generation",
-        "Failure path and edge case coverage",
-        "INVEST scoring of generated output",
-        "Automatic rewrite of failing stories",
+        "User story rewrite and clean-up",
+        "Acceptance criteria generation when none are provided",
+        "Gherkin Given/When/Then formatting",
+        "INVEST scoring",
+        "SMART scoring of acceptance criteria",
       ],
       offers: {
         "@type": "Offer",
@@ -84,12 +80,12 @@ const SOFTWARE_HOWTO_SCHEMA = {
     {
       "@type": "HowTo",
       "@id": `${PAGE_URL}#howto`,
-      name: "How to generate a user story with acceptance criteria using AI",
+      name: "How to turn a rough user story into a scored, complete backlog item",
       description:
-        "Turn a one sentence feature description into a complete user story with Gherkin acceptance criteria and an INVEST score.",
+        "Paste a rough or incomplete user story into the QPulse analyzer and get back a rewritten story, generated acceptance criteria, and an INVEST/SMART score.",
       totalTime: "PT1M",
       supply: [],
-      tool: [{ "@type": "HowToTool", name: "QPulse Free AI User Story Generator" }],
+      tool: [{ "@type": "HowToTool", name: "QPulse User Story Analyzer" }],
       step: STEPS.map((s, i) => ({
         "@type": "HowToStep",
         position: i + 1,
@@ -121,19 +117,20 @@ export default function GeneratorPage() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-              Free AI user story generator that scores what it writes
+              One analyzer. It also writes what you didn&rsquo;t.
             </h1>
             <p className="mt-5 text-lg text-[rgb(var(--text-muted))]">
-              Describe the feature in a sentence. This user story generator AI writes the story and the
-              Gherkin acceptance criteria, then scores both against INVEST and SMART so you know what you
-              are pasting into the backlog.
+              QPulse isn&rsquo;t a separate generator tool bolted onto the analyzer &mdash; it&rsquo;s the
+              same engine. Paste a rough story, even a single line, and leave the acceptance criteria
+              blank if you haven&rsquo;t written any. QPulse rewrites the story, drafts the acceptance
+              criteria you skipped, and scores the result against INVEST and SMART.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/register" className={buttonVariants({ variant: "primary", size: "lg" })}>
                 Create My Free Account
               </Link>
               <span className="text-sm text-[rgb(var(--text-muted))]">
-                Free account, no credit card. Generate as many stories as you want.
+                Free account, no credit card.
               </span>
             </div>
             <p className="mt-3 text-sm text-[rgb(var(--text-muted))]">
@@ -146,106 +143,67 @@ export default function GeneratorPage() {
 
           <Card className="animate-fade-in p-5 sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[rgb(var(--text-muted))]">
-              Generated from: &ldquo;customers need to filter search results by price&rdquo;
+              Input: &ldquo;As a shopper, I want to filter search results by price.&rdquo; Acceptance
+              criteria left blank.
             </p>
             <div className="mt-3 flex items-center justify-between">
               <p className="text-sm font-semibold">
-                As a returning shopper, I want to filter search results by a price range so that I only see
-                items I can afford.
+                As a shopper, I want to filter search results by price, so that I get the outcome I need
+                without unnecessary friction or delay.
               </p>
-              <Badge tone="success" className="shrink-0">9 / 10</Badge>
+              <Badge tone="success" className="shrink-0">Rewritten</Badge>
             </div>
-            <div className="mt-4 space-y-2 text-sm">
+            <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-[rgb(var(--text-muted))]">
+              Acceptance criteria &mdash; generated, not left empty
+            </p>
+            <div className="mt-2 space-y-2 text-sm">
               <p>
-                <strong>Given</strong> a shopper on the search results page
+                <strong>Given</strong> I am a shopper in a valid starting state
                 <br />
-                <strong>When</strong> they set a minimum and maximum price and apply it
+                <strong>When</strong> I perform the primary action described in the story
                 <br />
-                <strong>Then</strong> only items within that range are shown, with the count updated
+                <strong>Then</strong> the system completes the action and confirms success clearly, with a
+                defined, measurable threshold
               </p>
               <p>
-                <strong>Given</strong> a shopper applies a price range with no matching items
+                <strong>Given</strong> I am a shopper providing invalid or incomplete input
                 <br />
-                <strong>When</strong> the filter runs
+                <strong>When</strong> I attempt the primary action
                 <br />
-                <strong>Then</strong> an empty state explains no items matched and offers to clear the filter
+                <strong>Then</strong> the system rejects the action and explains what needs to be corrected,
+                with a defined, measurable threshold
               </p>
             </div>
           </Card>
         </div>
       </section>
 
-      {/* 2. Differentiator */}
+      {/* 2. It's one tool, not two */}
       <section className="border-t border-[rgb(var(--border))] bg-[rgb(var(--surface-2))]">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Generating a story is the easy part</h2>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">It&rsquo;s the analyzer. Not a second tool.</h2>
           <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            Any language model can turn &ldquo;password reset&rdquo; into a sentence starting with
-            &ldquo;As a user.&rdquo; That is not the hard problem. The hard problem is that the sentence
-            looks finished.
+            Plenty of tools will turn a feature name into a confident-sounding story from nothing. That
+            sentence reads like something a senior BA wrote. Then it goes into the backlog, and three
+            weeks later a developer finds it was independent of nothing, sized by nobody, and testable in
+            theory only.
           </p>
           <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            A generated story arrives polished. Correct grammar, right structure, confident tone. It reads
-            like something a senior BA wrote. Then it goes into the backlog, and three weeks later a
-            developer finds it was independent of nothing, sized by nobody, and testable in theory only.
-          </p>
-          <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            Fluent output is not the same as a good requirement. QPulse closes that gap by scoring every
-            story it generates against{" "}
+            QPulse doesn&rsquo;t invent a story out of thin air. It takes what you actually wrote &mdash;
+            even one rough sentence &mdash; and runs it through the exact same INVEST and SMART checks as{" "}
             <Link href="/" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
-              how INVEST scoring works
-            </Link>{" "}
-            &mdash; the same checks it would apply to a story you wrote yourself. If the generated version
-            fails, you see the failure before it reaches your board, not after.
+              the analyzer on the homepage
+            </Link>
+            . Where something&rsquo;s missing, like acceptance criteria you didn&rsquo;t get to yet, it
+            fills that gap and shows you the result &mdash; scored, not just generated.
           </p>
         </div>
       </section>
 
-      {/* 3. What you get */}
+      {/* 3. How it works — matches the homepage exactly */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          One sentence in, a complete backlog item out
-        </h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {OUTPUTS.map((o) => (
-            <Card key={o.title} className="p-5">
-              <p className="font-semibold">{o.title}</p>
-              <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">{o.body}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. Acceptance criteria generator */}
-      <section className="border-t border-[rgb(var(--border))] bg-[rgb(var(--surface-2))]">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            An acceptance criteria generator that writes the failure paths too
-          </h2>
-          <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            Ask most tools for acceptance criteria and you get the happy path. User does the right thing,
-            system responds correctly, everyone goes home.
-          </p>
-          <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            Real defects do not live there. They live in the fifth login attempt, the expired session, the
-            empty search result, the network drop halfway through an upload. This AI acceptance criteria
-            generator writes those cases by default, the same way you would want{" "}
-            <Link href="/faq#what-are-good-acceptance-criteria-for-a-login-page" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
-              good acceptance criteria for a login page
-            </Link>{" "}
-            to cover more than a correct password.
-          </p>
-          <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            You can also skip generation entirely and paste criteria you already wrote. QPulse scores those
-            the same way.
-          </p>
-        </div>
-      </section>
-
-      {/* 5. How it works */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Three steps in an online user story generator that does not need setup
+          Same three steps, starting from less
         </h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {STEPS.map((step, i) => (
@@ -260,13 +218,52 @@ export default function GeneratorPage() {
         </div>
         <div className="mt-8">
           <Link href="/register" className={buttonVariants({ variant: "outline" })}>
-            Generate My First Story
+            Try It On My Story
           </Link>
           <p className="mt-3 text-sm text-[rgb(var(--text-muted))]">
-            Everything here is free with an account. No credit card, and no limit you will hit on your
-            first afternoon.
+            Free with an account. No credit card, and nothing to install.
           </p>
         </div>
+      </section>
+
+      {/* 4. What you get */}
+      <section className="border-t border-[rgb(var(--border))] bg-[rgb(var(--surface-2))]">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            What comes back, even from a thin starting point
+          </h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {OUTPUTS.map((o) => (
+              <Card key={o.title} className="p-5">
+                <p className="font-semibold">{o.title}</p>
+                <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">{o.body}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Acceptance criteria generation, explained honestly */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          Skipped the acceptance criteria? QPulse still gives you two scenarios
+        </h2>
+        <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
+          A story with no acceptance criteria at all is common &mdash; and it&rsquo;s exactly what fails{" "}
+          <Link
+            href="/faq#what-are-good-acceptance-criteria-for-a-login-page"
+            className="font-medium text-brand-600 hover:underline dark:text-brand-400"
+          >
+            good acceptance criteria for a login page
+          </Link>{" "}
+          checks most often. Leave the field blank and QPulse drafts a happy-path scenario and a
+          complementary invalid-input scenario, in Given/When/Then form, so testability isn&rsquo;t
+          resting on a single example you never wrote.
+        </p>
+        <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
+          Already have acceptance criteria? Paste them in instead and QPulse scores and rewrites what you
+          wrote rather than replacing it.
+        </p>
       </section>
 
       {/* 6. Integrations */}
@@ -293,28 +290,28 @@ export default function GeneratorPage() {
           A fair question, and the honest answer is: not on its own. A story is the written record of a
           conversation. Skip the conversation and you get a well formatted assumption. No model can
           interview your users, sit in your architecture review, or know that the payments team is mid
-          migration.
+          migration. That&rsquo;s why QPulse starts from what you wrote instead of inventing a story from
+          a feature name.
         </p>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          What AI does well is the first draft and the checking. Blank page to working draft in ten
-          seconds, then a consistent quality check applied to every story instead of only the ones someone
-          had energy to review that day. Use this as an ai agile user story generator for the draft and
-          the audit, and see for yourself whether it&nbsp;
+          What it does well is filling the specific gaps you left &mdash; a thin benefit clause, missing
+          acceptance criteria &mdash; and checking the result against the same standard every time. It
+          won&rsquo;t{" "}
           <Link href="/faq#will-this-replace-refinement" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
-            will this replace refinement
+            replace refinement
           </Link>
-          . It does not &mdash; keep the thinking where it belongs, which is with your team.
+          . Keep the thinking where it belongs, which is with your team.
         </p>
       </section>
 
       {/* 8. Final CTA */}
       <section className="border-t border-[rgb(var(--border))] bg-[rgb(var(--surface-2))]">
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Try the AI user story writer on something real</h2>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Try it on a story you haven&rsquo;t finished yet</h2>
           <p className="mt-4 text-[rgb(var(--text-muted))]">
-            Not a demo feature. Take the next item on your actual backlog, describe it in one line, and see
-            what comes back. Then check the score against your own judgement. If QPulse is wrong, you will
-            know in ten seconds. If it is right, you just saved a refinement session.
+            Not a demo feature. Take the next item on your actual backlog &mdash; even a rough one-liner
+            with no acceptance criteria &mdash; and see what comes back. Then check the score against your
+            own judgement.
           </p>
           <div className="mt-8 flex flex-col items-center gap-2">
             <Link href="/register" className={buttonVariants({ variant: "primary", size: "lg" })}>
