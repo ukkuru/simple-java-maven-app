@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 250 250 252;
+  --surface: 255 255 255;
+  --surface-2: 246 247 251;
+  --border: 228 230 237;
+  --text: 15 21 38;
+  --text-muted: 100 108 128;
+}
+
+.dark {
+  --bg: 10 14 26;
+  --surface: 15 21 38;
+  --surface-2: 22 29 51;
+  --border: 31 41 66;
+  --text: 236 238 245;
+  --text-muted: 148 156 178;
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+::selection {
+  background-color: rgb(99 102 241 / 0.25);
+}
+
+.focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-navy-950;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
