@@ -23,16 +23,45 @@ const VAGUE_REPLACEMENTS: Record<string, string> = {
   reliable: "available and correct in at least 99% of attempts",
 };
 
+function normalizePersona(rawPersona: string | null | undefined): string {
+  const persona = rawPersona?.trim() || "";
+  return !persona || persona.toLowerCase() === "user" ? "registered user" : persona;
+}
+
+function deVague(text: string): string {
+  let result = text;
+  for (const [term, replacement] of Object.entries(VAGUE_REPLACEMENTS)) {
+    const re = new RegExp(`\\b${term.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "i");
+    if (re.test(result)) result = result.replace(re, replacement);
+  }
+  return result;
+}
+
+/**
+ * Splits a goal on top-level "and"s and returns the first clause plus
+ * whatever was split off, so a bundled goal like "a settings page and also
+ * billing and also notifications" narrows to just the first capability
+ * instead of silently keeping the whole bundle in the "fixed" story.
+ */
+function splitBundledGoal(goal: string): { primary: string; splitOff: string[] } {
+  const segments = goal
+    .split(/\s*,?\s+and(?:\s+also)?\s+/i)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (segments.length <= 1) return { primary: goal, splitOff: [] };
+  return { primary: segments[0], splitOff: segments.slice(1) };
+}
+
 export function rewriteUserStory(userStory: string): { text: string; rationale: string[] } {
   const parsed = parseUserStory(userStory);
   const rationale: string[] = [];
 
-  let persona = parsed.persona?.trim() || "";
+  const originalPersona = parsed.persona?.trim() || "";
   let goal = parsed.goal?.trim() || "";
   let benefit = parsed.benefit?.trim() || "";
 
-  if (!persona || persona.toLowerCase() === "user") {
-    persona = persona || "registered user";
+  const persona = normalizePersona(originalPersona);
+  if (persona !== originalPersona) {
     rationale.push("Persona is named specifically rather than left as a generic \"user\".");
   } else {
     rationale.push("Persona is specific and preserved from the original story.");
@@ -41,31 +70,41 @@ export function rewriteUserStory(userStory: string): { text: string; rationale: 
   if (!goal) {
     goal = userStory
       .replace(/^as an?[^,]+,?\s*/i, "")
-      .replace(/i\s+(want|need)\s+(to\s+)?/i, "")
+      .replace(/i\s+(want|need)\s+/i, "")
       .replace(/,?\s*so that.*/i, "")
       .trim();
     if (!goal) goal = "accomplish the intended task";
   }
-  // De-vague the goal text.
-  for (const [term, replacement] of Object.entries(VAGUE_REPLACEMENTS)) {
-    const re = new RegExp(`\\b${term.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "i");
-    if (re.test(goal)) {
-      goal = goal.replace(re, replacement);
-    }
+
+  const { primary, splitOff } = splitBundledGoal(goal);
+  if (splitOff.length > 0) {
+    goal = primary;
+    rationale.push(
+      `Scope is narrowed to "${primary}" — ${splitOff.map((s) => `"${s}"`).join(", ")} ${
+        splitOff.length > 1 ? "were" : "was"
+      } split out; each should become its own story so this one is independently testable.`
+    );
+  } else {
+    rationale.push("Scope is limited to a single capability so the story is independently testable.");
   }
+
+  goal = deVague(goal);
   rationale.push("Goal is clearly and concretely defined, avoiding subjective language.");
 
   if (!benefit) {
     benefit = `achieve the intended outcome without unnecessary friction`;
     rationale.push('A "so that" clause was added to make the underlying value explicit.');
   } else {
-    rationale.push("User value is explicit in the \"so that\" clause.");
+    const deVaguedBenefit = deVague(benefit);
+    if (deVaguedBenefit !== benefit) {
+      benefit = deVaguedBenefit;
+      rationale.push('User value is stated as a concrete outcome instead of subjective adjectives.');
+    } else {
+      rationale.push("User value is explicit in the \"so that\" clause.");
+    }
   }
 
-  rationale.push("Scope is limited to a single capability so the story is independently testable.");
-
-  const goalPhrase = /^to\s/i.test(goal) ? goal : `to ${goal}`;
-  const text = `As a ${persona}, I want ${goalPhrase}, so that ${benefit}.`;
+  const text = `As a ${persona}, I want ${goal}, so that ${benefit}.`;
   return { text: capitalize(text), rationale };
 }
 
@@ -75,7 +114,7 @@ export function rewriteAcceptanceCriteria(
 ): RewrittenScenario[] {
   const blocks = splitAcceptanceCriteria(acceptanceCriteria);
   const parsed = parseUserStory(userStory);
-  const persona = parsed.persona?.trim() || "user";
+  const persona = normalizePersona(parsed.persona);
 
   if (blocks.length === 0 || !acceptanceCriteria.trim()) {
     return [
@@ -99,20 +138,26 @@ export function rewriteAcceptanceCriteria(
     const label = block.match(/^scenario[^\n:—-]*[:—-]?\s*(.*)$/i)?.[1]?.trim();
     const title = `Scenario ${i + 1}${label ? ` — ${capitalize(label)}` : ""}`;
 
-    let given = gwt.given ?? `I am a ${persona}`;
-    let when = gwt.when ?? cleanupFreeform(block);
-    let then = gwt.then ?? "the system responds with a clear, verifiable outcome";
+    let given: string;
+    let when: string;
+    let then: string;
 
-    for (const [term, replacement] of Object.entries(VAGUE_REPLACEMENTS)) {
-      const re = new RegExp(`\\b${term.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "i");
-      if (re.test(then)) then = then.replace(re, replacement);
-      if (re.test(when)) when = when.replace(re, replacement);
+    if (isGwtFormat(block)) {
+      given = gwt.given ?? `I am a ${persona}`;
+      when = gwt.when ?? "I perform the primary action described in the story";
+      then = gwt.then ?? "the system responds with a clear, verifiable outcome";
+    } else {
+      // A plain (non-GWT) criterion is usually stating an expected outcome
+      // rather than a trigger — put the (de-vagued) statement in "then"
+      // rather than dumping it unchanged into "when".
+      given = `I am a ${persona}`;
+      when = "I perform the primary action described in the story";
+      then = cleanupFreeform(block);
     }
 
-    if (!isGwtFormat(block)) {
-      // Best-effort conversion of a plain bullet into Given/When/Then.
-      when = cleanupFreeform(block);
-    }
+    given = deVague(given);
+    when = deVague(when);
+    then = deVague(then);
 
     return {
       title,

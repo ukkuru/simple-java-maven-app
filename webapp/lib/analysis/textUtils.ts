@@ -6,8 +6,12 @@ export interface ParsedUserStory {
   matchesStandardForm: boolean;
 }
 
+// Deliberately does NOT special-case an optional "to" after want/need: whether
+// "to" is present changes the correct grammar for reusing the captured goal
+// elsewhere ("I want to reset..." vs "I want a settings page..."), so it's
+// kept as part of the goal capture rather than stripped and re-added later.
 const STANDARD_FORM_RE =
-  /as\s+an?\s+(.+?),?\s+i\s+(?:want|need|would like)(?:\s+to)?\s+(.+?)(?:,?\s+so\s+that\s+(.+))?$/is;
+  /as\s+an?\s+(.+?),?\s+i\s+(?:want|need|would like)\s+(.+?)(?:,?\s+so\s+that\s+(.+))?$/is;
 
 export function parseUserStory(text: string): ParsedUserStory {
   const raw = text.trim();
