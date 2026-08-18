@@ -16,6 +16,7 @@ model User {
   passwordHash   String?
   marketingOptIn Boolean   @default(false)
   createdAt      DateTime  @default(now())
+  lastLoginAt    DateTime?
 
   accounts Account[]
   sessions Session[]

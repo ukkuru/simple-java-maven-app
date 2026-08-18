@@ -116,14 +116,39 @@ GOOGLE_CLIENT_SECRET=
 
 ### Marketing email consent
 
-The registration form and the account settings page both disclose, in plain
-language, that the account email address may be used for marketing
-communications in addition to account/service email. Registration includes
-an explicit opt-in checkbox (`marketingOptIn`, default **off**); users can
-change their preference anytime from **Settings → Account** via
+Both `/login` and `/register` disclose, in plain language, that the account
+email address may be used for marketing communications in addition to
+account/service email (`components/auth/marketing-notice.tsx`, rendered by
+the shared `AuthShell` above *both* the Google button and the email form —
+so a visitor who signs in with Google without ever touching the email form
+still sees it first). Registration includes an explicit opt-in checkbox
+(`marketingOptIn`, default **off**); users can change their preference
+anytime from **Settings → Account** via
 `PATCH /api/account/marketing-preference`. Google sign-ups also default to
 opted-out and can opt in from the same Settings toggle, since there's no
 form step in the OAuth flow to show the checkbox.
+
+### Admin: registered users
+
+`/admin` lists everyone who has registered or signed in — name, email,
+sign-in method, marketing opt-in, analyses run, registration date, and last
+login. Access is controlled by `ADMIN_EMAILS` (comma-separated,
+case-insensitive) rather than a database role, so the first admin doesn't
+require anything already being an admin to grant it — set it in `.env` and
+redeploy. Non-admins (including unauthenticated visitors, who are redirected
+to `/login` first) see a clean "Access denied" message, not the data. The
+nav link only renders for admins (`session.user.isAdmin`, computed from
+`ADMIN_EMAILS` in the session callback), but the page itself independently
+re-checks on the server — the link is a convenience, not the enforcement.
+
+```bash
+ADMIN_EMAILS=you@example.com,teammate@example.com
+```
+
+Sign-in also updates `User.lastLoginAt` via a NextAuth `signIn` event, which
+is what powers the "last login" column and the "active in last 7 days" stat
+— registration alone (`createdAt`) doesn't tell you who's actually using the
+app.
 
 ### Demo login
 

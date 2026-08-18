@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GoogleButton } from "@/components/auth/google-button";
-import { MarketingNotice } from "@/components/auth/marketing-notice";
 
 export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
   const router = useRouter();
@@ -120,8 +119,6 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-
-        <MarketingNotice />
 
         <label className="flex items-start gap-2.5 text-sm">
           <input

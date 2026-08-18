@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   LayoutDashboard,
   FilePlus2,
@@ -9,6 +10,7 @@ import {
   LayoutTemplate,
   Settings,
   Sparkles,
+  ShieldCheck,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
@@ -24,6 +26,10 @@ const NAV_ITEMS = [
 
 export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const navItems = session?.user?.isAdmin
+    ? [...NAV_ITEMS, { href: "/admin", label: "Admin: Users", icon: ShieldCheck }]
+    : NAV_ITEMS;
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2 px-5 py-5">
@@ -37,7 +43,7 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </span>
       </div>
       <nav className="flex-1 space-y-1 px-3" aria-label="Primary">
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const active = pathname === item.href || pathname?.startsWith(item.href + "/");
           const Icon = item.icon;
           return (

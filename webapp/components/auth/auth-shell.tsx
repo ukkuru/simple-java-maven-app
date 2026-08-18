@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { CopyrightNotice } from "@/components/layout/copyright-notice";
+import { MarketingNotice } from "@/components/auth/marketing-notice";
 
 export function AuthShell({
   title,
@@ -30,6 +31,9 @@ export function AuthShell({
       <div className="w-full max-w-sm rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] p-6 shadow-sm animate-fade-in sm:p-8">
         <h1 className="text-xl font-bold tracking-tight">{title}</h1>
         <p className="mt-1 text-sm text-[rgb(var(--text-muted))]">{subtitle}</p>
+        <div className="mt-4">
+          <MarketingNotice />
+        </div>
         <div className="mt-6">{children}</div>
       </div>
 

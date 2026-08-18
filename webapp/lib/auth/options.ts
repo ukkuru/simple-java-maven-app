@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db/client";
 import { loginSchema } from "@/lib/validation/auth";
+import { isAdminEmail } from "@/lib/auth/admin";
 
 export const isGoogleAuthConfigured = Boolean(
   process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
@@ -54,8 +55,16 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
+        session.user.isAdmin = isAdminEmail(session.user.email);
       }
       return session;
+    },
+  },
+  events: {
+    async signIn({ user }) {
+      if (user?.id) {
+        await prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
+      }
     },
   },
 };
