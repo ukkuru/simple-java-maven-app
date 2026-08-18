@@ -10,8 +10,11 @@ export interface ParsedUserStory {
 // "to" is present changes the correct grammar for reusing the captured goal
 // elsewhere ("I want to reset..." vs "I want a settings page..."), so it's
 // kept as part of the goal capture rather than stripped and re-added later.
+// "so that" is the canonical divider, but "so I can ..." (without "that") is
+// common enough in real-world stories that treating it as goal text instead
+// of a value clause was swallowing the entire benefit into the goal.
 const STANDARD_FORM_RE =
-  /as\s+an?\s+(.+?),?\s+i\s+(?:want|need|would like)\s+(.+?)(?:,?\s+so\s+that\s+(.+))?$/is;
+  /as\s+an?\s+(.+?),?\s+i\s+(?:want|need|would like)\s+(.+?)(?:,?\s+so\s+(?:that\s+)?(.+))?$/is;
 
 export function parseUserStory(text: string): ParsedUserStory {
   const raw = text.trim();
@@ -23,7 +26,12 @@ export function parseUserStory(text: string): ParsedUserStory {
   return {
     raw,
     persona: persona?.trim().replace(/[.!?]+$/, "").trim() || null,
-    goal: goal?.trim().replace(/,?\s*so that.*$/i, "").replace(/[.!?]+$/, "").trim() || null,
+    // No further "so"-stripping here: the regex's lazy goal capture plus the
+    // optional trailing so-clause group already separates goal from benefit
+    // correctly. An earlier version re-stripped "so" with a zero-width
+    // \s* before it, which matched "so" as a bare substring inside words
+    // like "al-so" and silently truncated the goal mid-word.
+    goal: goal?.trim().replace(/[.!?]+$/, "").trim() || null,
     benefit: benefit?.trim().replace(/[.!?]+$/, "").trim() || null,
     matchesStandardForm: true,
   };

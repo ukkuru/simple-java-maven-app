@@ -66,5 +66,16 @@ export const authOptions: NextAuthOptions = {
         await prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
       }
     },
+    // Fires only when the Prisma adapter creates a brand-new user, which
+    // only happens on first OAuth (Google) sign-in — email/password accounts
+    // are created directly by /api/register, not through the adapter, so
+    // this never runs for them. There's no consent-checkbox step in the
+    // Google flow, so new Google sign-ups default to opted in here; users
+    // can turn it off anytime in Settings.
+    async createUser({ user }) {
+      if (user?.id) {
+        await prisma.user.update({ where: { id: user.id }, data: { marketingOptIn: true } });
+      }
+    },
   },
 };

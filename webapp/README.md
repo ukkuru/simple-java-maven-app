@@ -121,12 +121,20 @@ email address may be used for marketing communications in addition to
 account/service email (`components/auth/marketing-notice.tsx`, rendered by
 the shared `AuthShell` above *both* the Google button and the email form —
 so a visitor who signs in with Google without ever touching the email form
-still sees it first). Registration includes an explicit opt-in checkbox
-(`marketingOptIn`, default **off**); users can change their preference
-anytime from **Settings → Account** via
-`PATCH /api/account/marketing-preference`. Google sign-ups also default to
-opted-out and can opt in from the same Settings toggle, since there's no
-form step in the OAuth flow to show the checkbox.
+still sees it first). The default differs by sign-in method, and the notice
+explains why:
+
+- **Email/password**: registration shows an explicit opt-in checkbox
+  (`marketingOptIn`, default **off**) — the user actively chooses.
+- **Google**: there's no separate consent step in the OAuth flow, so new
+  Google sign-ups default to **opted in**
+  (`events.createUser` in `lib/auth/options.ts`, which only fires when the
+  Prisma adapter creates a brand-new user — i.e. only for OAuth, never for
+  `/api/register`, which always sets the field explicitly from the
+  checkbox).
+
+Either way, the preference can be changed anytime from **Settings →
+Account** via `PATCH /api/account/marketing-preference`.
 
 ### Admin: registered users
 

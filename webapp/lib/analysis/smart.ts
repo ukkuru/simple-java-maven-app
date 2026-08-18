@@ -50,19 +50,23 @@ export function evaluateSmart(
   {
     const issues: string[] = [];
     const recs: string[] = [];
-    let score = 60;
+    let score = 45;
     if (!parsed.matchesStandardForm) {
       issues.push('The story does not follow the "As a / I want / so that" structure, making the persona and goal harder to pin down.');
       recs.push('Rewrite using "As a [persona], I want [capability], so that [benefit]" to make each element explicit.');
       score -= 20;
     } else {
-      score += 10;
-      if (!parsed.persona || parsed.persona.length < 3) {
+      score += 20;
+      if (parsed.persona && parsed.persona.length >= 3 && parsed.persona.toLowerCase() !== "user") {
+        score += 15;
+      } else {
         issues.push("The persona is missing or too generic (e.g. just \"user\").");
         recs.push("Name a specific role or persona (e.g. \"registered customer\", \"warehouse manager\") instead of a generic \"user\".");
         score -= 15;
       }
-      if (!parsed.goal || wordCount(parsed.goal) < 2) {
+      if (parsed.goal && wordCount(parsed.goal) >= 2) {
+        score += 15;
+      } else {
         issues.push("The requested capability is not clearly stated.");
         recs.push("Describe precisely what the user wants to do, using a concrete verb and object.");
         score -= 15;
@@ -95,14 +99,15 @@ export function evaluateSmart(
     const acBlocks = splitAcceptanceCriteria(acceptanceCriteria);
     const measurableBlocks = acBlocks.filter((b) => hasMeasurableTerms(b));
     const vagueInAc = findVagueTerms(acceptanceCriteria);
-    let score = 50;
+    let score = 40;
 
     if (acBlocks.length === 0 || !acceptanceCriteria.trim()) {
       issues.push("No acceptance criteria were supplied, so success cannot be objectively evaluated.");
       recs.push("Add acceptance criteria with concrete, checkable conditions for \"done\".");
       score = 15;
     } else {
-      score += Math.min(35, measurableBlocks.length * 15);
+      score += Math.min(40, measurableBlocks.length * 20);
+      if (acBlocks.length >= 2) score += 10;
       if (measurableBlocks.length === 0) {
         issues.push("None of the acceptance criteria contain a quantifiable condition (a number, percentage, or time bound).");
         recs.push('Where relevant, add measurable thresholds, e.g. "loads within 2 seconds for 95% of requests" instead of "loads quickly".');
@@ -131,7 +136,7 @@ export function evaluateSmart(
   {
     const issues: string[] = [];
     const recs: string[] = [];
-    let score = 75;
+    let score = 95;
     const andCount = parsed.goal ? countAndChains(parsed.goal) : countAndChains(userStory);
     const deps = findDependencyHints(userStory + " " + acceptanceCriteria);
     if (andCount >= 2) {

@@ -49,16 +49,12 @@ export default async function SettingsPage() {
     select: { email: true, name: true, marketingOptIn: true, passwordHash: true },
   });
 
-  const provider = (process.env.AI_PROVIDER || "heuristic").toLowerCase();
-  const model = process.env.AI_MODEL || "(default)";
-  const configured = provider === "heuristic" || Boolean(process.env.AI_API_KEY);
-
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
         <p className="mt-1 text-sm text-[rgb(var(--text-muted))]">
-          Account, analysis engine configuration, and scoring methodology.
+          Account preferences and scoring methodology.
         </p>
       </div>
 
@@ -87,35 +83,6 @@ export default async function SettingsPage() {
             </div>
             <MarketingToggle initialValue={user?.marketingOptIn ?? false} />
           </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Provider</CardTitle>
-          <CardDescription>
-            Configured via environment variables (AI_PROVIDER, AI_API_KEY, AI_MODEL). API keys are never exposed to the
-            browser.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-[rgb(var(--text-muted))]">Provider</span>
-            <Badge tone="brand">{provider}</Badge>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-[rgb(var(--text-muted))]">Model</span>
-            <span className="font-medium">{provider === "heuristic" ? "Built-in rule engine" : model}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-[rgb(var(--text-muted))]">Status</span>
-            <Badge tone={configured ? "success" : "danger"}>{configured ? "Ready" : "Missing API key"}</Badge>
-          </div>
-          <p className="pt-2 text-xs text-[rgb(var(--text-muted))]">
-            The heuristic provider requires no API key and always works. Set AI_PROVIDER=anthropic and AI_API_KEY to use
-            an LLM instead — the app talks to it through the same AnalysisProvider interface, so no UI code changes are
-            needed.
-          </p>
         </CardContent>
       </Card>
 

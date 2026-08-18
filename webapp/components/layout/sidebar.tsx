@@ -65,10 +65,7 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           );
         })}
       </nav>
-      <div className="space-y-1.5 px-5 py-4">
-        <p className="text-xs text-[rgb(var(--text-muted))]">
-          Built for Product Managers, BAs, POs &amp; QA.
-        </p>
+      <div className="px-5 py-4">
         <CopyrightNotice />
       </div>
     </div>

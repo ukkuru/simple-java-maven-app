@@ -6,8 +6,10 @@ export function MarketingNotice() {
       <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       <span>
         We&rsquo;ll use your email address to manage your account, whether you sign up with a
-        password or with Google. If you opt in — at sign-up or anytime later in Settings — we may
-        also send it occasional product updates and marketing communications from Testmetry.com.
+        password or with Google. With a password, you choose below whether to also receive
+        product updates and marketing communications from Testmetry.com. With Google, there&rsquo;s
+        no separate consent step at sign-up, so that&rsquo;s turned on by default — you can turn it
+        off anytime in Settings.
       </span>
     </p>
   );
