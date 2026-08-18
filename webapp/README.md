@@ -160,6 +160,59 @@ LLM instead of the built-in heuristic engine, set `AI_PROVIDER=anthropic` and
 `AI_API_KEY=...` in `.env`. To enable Google sign-in, set `GOOGLE_CLIENT_ID`
 and `GOOGLE_CLIENT_SECRET` (see **Authentication** above).
 
+## Running with Docker
+
+```bash
+cp .env.example .env
+echo "NEXTAUTH_SECRET=$(openssl rand -base64 32)" >> .env
+# set NEXTAUTH_URL to wherever this container is reachable, e.g.
+# http://localhost:3000 locally, or https://yourdomain.com in production
+
+docker compose up -d --build
+```
+
+`docker-compose.yml` builds the image from the included multi-stage
+`Dockerfile` (Next.js standalone output on `node:20-slim`), mounts a named
+volume at `/app/data` for the SQLite file so it survives rebuilds/restarts,
+and runs `docker-entrypoint.sh` on container start, which runs
+`prisma db push` against that volume (and `prisma/seed.ts` when
+`SEED_DEMO_DATA=true`) before starting the server. Required env vars
+(`NEXTAUTH_SECRET`, `NEXTAUTH_URL`) fail loudly at container start if unset,
+rather than booting into a broken auth setup.
+
+To run the container directly instead of via Compose:
+
+```bash
+docker build -t user-story-quality-analyzer .
+docker run -p 3000:3000 --env-file .env \
+  -e DATABASE_URL=file:/app/data/prod.db \
+  -v usqa-data:/app/data \
+  user-story-quality-analyzer
+```
+
+For Postgres/MySQL instead of SQLite in the container, override
+`DATABASE_URL` and drop the volume mount — the schema and every query in
+`lib/db` are provider-agnostic aside from the `datasource` block in
+`prisma/schema.prisma`.
+
+### Deploying this container on Hostinger
+
+Docker only runs on **Hostinger VPS** plans (not shared/Cloud hosting).
+
+1. Provision a VPS in hPanel — the "Docker" OS template comes with Docker
+   pre-installed; otherwise SSH in and install it yourself
+   (`curl -fsSL https://get.docker.com | sh`).
+2. `git clone` this repo onto the VPS, `cd simple-java-maven-app/webapp`.
+3. Create `.env` as above, with `NEXTAUTH_URL` set to your real domain.
+4. `docker compose up -d --build`.
+5. Point the domain's A record at the VPS IP (hPanel → Domains → DNS), put
+   Nginx (or Hostinger's built-in reverse proxy, if offered on your plan) in
+   front of container port 3000, and issue a certificate (Let's Encrypt via
+   hPanel, or `certbot` directly on the VPS) so the app is served over
+   HTTPS — required for secure auth cookies and for Google OAuth's redirect
+   URI, which must also be updated to
+   `https://yourdomain.com/api/auth/callback/google`.
+
 ## Scripts
 
 | Script | Purpose |
