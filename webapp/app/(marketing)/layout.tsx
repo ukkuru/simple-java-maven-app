@@ -21,6 +21,14 @@ const ORGANIZATION_WEBSITE_SCHEMA = {
       },
       email: ORG.email,
       telephone: "+91-9895780269",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Flat 2A4 Abad Green Terrace, Mallepally Road, Thrikkakara",
+        addressLocality: "Kochi",
+        addressRegion: "Kerala",
+        postalCode: "682021",
+        addressCountry: "IN",
+      },
       contactPoint: [
         {
           "@type": "ContactPoint",
