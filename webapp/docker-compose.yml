@@ -16,6 +16,7 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       SEED_DEMO_DATA: ${SEED_DEMO_DATA:-false}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
     volumes:
       - db-data:/app/data
     restart: unless-stopped
