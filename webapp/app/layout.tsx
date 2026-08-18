@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { AuthSessionProvider } from "@/components/auth/session-provider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://qpulse.sbs"),
   title: "User Story Quality Analyzer",
   description:
     "Analyze User Stories and Acceptance Criteria against SMART or INVEST and get actionable, AI-powered recommendations.",
