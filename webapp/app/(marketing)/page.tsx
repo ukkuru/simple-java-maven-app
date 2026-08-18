@@ -14,7 +14,7 @@ import { ORG, SITE_URL } from "@/lib/seo/site";
 export const metadata: Metadata = {
   title: "User Story Quality Analyzer | INVEST and SMART Scoring",
   description:
-    "Paste any user story and get an instant quality score against INVEST and SMART, plus the exact rewrite. Built for BAs, QA and engineers. Free to try.",
+    "Paste any user story and get an instant quality score against INVEST and SMART, plus the exact rewrite and acceptance criteria generated for you if you skipped them. Free to try.",
   alternates: { canonical: `${SITE_URL}/` },
 };
 
@@ -34,8 +34,8 @@ const SOFTWARE_APPLICATION_SCHEMA = {
     "SMART scoring for acceptance criteria",
     "Gherkin Given When Then validation",
     "Automated story rewrite",
+    "Acceptance criteria generation when none are provided",
     "Definition of Ready checks",
-    "Batch backlog analysis",
   ],
   offers: {
     "@type": "Offer",
@@ -67,7 +67,7 @@ const INVEST_ITEMS = [
 ];
 
 const STEPS = [
-  { title: "Paste", body: "Drop in a user story, an acceptance criterion, or a whole batch from your backlog." },
+  { title: "Paste", body: "Drop in a user story and its acceptance criteria — or just the story if you haven’t written criteria yet." },
   { title: "Score", body: "QPulse checks it against INVEST and SMART and shows which criteria failed and why." },
   { title: "Rewrite", body: "Take the suggested version, or edit it and re score until it clears." },
 ];
@@ -271,12 +271,8 @@ export default async function HomePage() {
           </div>
 
           <p className="mt-6 text-sm text-[rgb(var(--text-muted))]">
-            Same feature. One of them starts an argument in sprint planning. The other one gets built. Or
-            skip the manual rewrite and{" "}
-            <Link href="/free-ai-user-story-generator" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
-              generate a user story with AI
-            </Link>{" "}
-            that already scores this way.
+            Same feature. One of them starts an argument in sprint planning. The other one gets built —
+            and QPulse writes that second version for you.
           </p>
         </div>
       </section>
@@ -294,6 +290,59 @@ export default async function HomePage() {
               <p className="mt-1 text-sm text-[rgb(var(--text-muted))]">{step.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* 5b. Acceptance criteria generation */}
+      <section id="acceptance-criteria-generator" className="scroll-mt-20 border-t border-[rgb(var(--border))] bg-[rgb(var(--surface-2))]">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Skipped the acceptance criteria? QPulse writes them for you.
+          </h2>
+          <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
+            A story with no acceptance criteria at all is common, and it&rsquo;s what most &ldquo;story
+            generator&rdquo; tools quietly ignore. Leave that field blank in QPulse and the analyzer
+            drafts a happy-path scenario and a complementary invalid-input scenario for you, in
+            Given/When/Then form, so testability isn&rsquo;t resting on an example you never wrote.
+          </p>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <Card className="p-6">
+              <p className="text-sm font-semibold uppercase tracking-wide text-[rgb(var(--text-muted))]">
+                You paste
+              </p>
+              <p className="mt-3 text-sm italic">
+                &ldquo;As a shopper, I want to filter search results by price.&rdquo; Acceptance criteria
+                left blank.
+              </p>
+            </Card>
+            <Card className="p-6">
+              <p className="text-sm font-semibold uppercase tracking-wide text-[rgb(var(--text-muted))]">
+                QPulse generates
+              </p>
+              <div className="mt-3 space-y-3 text-sm">
+                <p>
+                  <strong>Given</strong> I am a shopper in a valid starting state
+                  <br />
+                  <strong>When</strong> I perform the primary action described in the story
+                  <br />
+                  <strong>Then</strong> the system completes the action and confirms success clearly, with
+                  a defined, measurable threshold
+                </p>
+                <p>
+                  <strong>Given</strong> I am a shopper providing invalid or incomplete input
+                  <br />
+                  <strong>When</strong> I attempt the primary action
+                  <br />
+                  <strong>Then</strong> the system rejects the action and explains what needs to be
+                  corrected, with a defined, measurable threshold
+                </p>
+              </div>
+            </Card>
+          </div>
+          <p className="mt-6 text-sm text-[rgb(var(--text-muted))]">
+            Already have acceptance criteria written? Paste them in instead and QPulse scores and rewrites
+            what you wrote rather than replacing it.
+          </p>
         </div>
       </section>
 

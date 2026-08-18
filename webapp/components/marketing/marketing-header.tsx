@@ -4,10 +4,7 @@ import { Sparkles } from "lucide-react";
 import { authOptions } from "@/lib/auth/options";
 import { buttonVariants } from "@/components/ui/button";
 
-const NAV_LINKS = [
-  { href: "/free-ai-user-story-generator", label: "Generator" },
-  { href: "/faq", label: "FAQ" },
-];
+const NAV_LINKS = [{ href: "/faq", label: "FAQ’s" }];
 
 export async function MarketingHeader() {
   const session = await getServerSession(authOptions);

@@ -17,14 +17,6 @@ export function MarketingFooter() {
                   Analyzer
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/free-ai-user-story-generator"
-                  className="focus-ring rounded hover:text-brand-600 dark:hover:text-brand-400"
-                >
-                  Generator
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -35,7 +27,7 @@ export function MarketingFooter() {
             <ul className="mt-3 space-y-2 text-sm">
               <li>
                 <Link href="/faq" className="focus-ring rounded hover:text-brand-600 dark:hover:text-brand-400">
-                  FAQ
+                  FAQ&rsquo;s
                 </Link>
               </li>
               <li>

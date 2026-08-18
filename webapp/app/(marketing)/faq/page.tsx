@@ -146,25 +146,25 @@ export default function FaqPage() {
                 <p className="mt-3 text-sm">
                   Need the failure paths written out for you?{" "}
                   <Link
-                    href="/free-ai-user-story-generator"
+                    href="/#acceptance-criteria-generator"
                     className="font-medium text-brand-600 hover:underline dark:text-brand-400"
                   >
-                    generate acceptance criteria for login
+                    QPulse drafts the edge cases automatically
                   </Link>{" "}
-                  and QPulse writes the edge cases by default.
+                  when you leave acceptance criteria blank.
                 </p>
               )}
               {item.id === "what-is-gherkin-and-when-should-i-use-it-for-acceptance-criteria" && (
                 <p className="mt-3 text-sm">
                   QPulse validates Gherkin structure and flags conditions that are not actually testable
-                  with its{" "}
+                  &mdash; and{" "}
                   <Link
-                    href="/free-ai-user-story-generator"
+                    href="/#acceptance-criteria-generator"
                     className="font-medium text-brand-600 hover:underline dark:text-brand-400"
                   >
-                    Gherkin acceptance criteria generator
-                  </Link>
-                  .
+                    writes a full Given/When/Then scenario pair
+                  </Link>{" "}
+                  if you didn&rsquo;t provide any.
                 </p>
               )}
               {item.id === "do-you-have-a-user-story-template-for-jira-or-confluence" && (
