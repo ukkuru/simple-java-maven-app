@@ -1,10 +1,16 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/options";
 import { listAnalyses } from "@/lib/db/history";
 import { HistoryList } from "@/components/dashboard/history-list";
 
 export const dynamic = "force-dynamic";
 
 export default async function HistoryPage() {
-  const records = await listAnalyses(100);
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+
+  const records = await listAnalyses(session.user.id, 100);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">

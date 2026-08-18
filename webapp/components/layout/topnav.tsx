@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, Moon, Sun, HelpCircle, UserCircle } from "lucide-react";
+import { Menu, Moon, Sun, HelpCircle } from "lucide-react";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useFramework } from "@/components/layout/framework-context";
 import { Tooltip } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { UserMenu } from "@/components/layout/user-menu";
 
 export function TopNav({ onOpenMobileNav }: { onOpenMobileNav: () => void }) {
   const { theme, toggle } = useTheme();
@@ -69,8 +70,8 @@ export function TopNav({ onOpenMobileNav }: { onOpenMobileNav: () => void }) {
           )}
         </div>
 
-        <div className="ml-1 flex h-8 w-8 items-center justify-center rounded-full bg-[rgb(var(--surface-2))] text-[rgb(var(--text-muted))]">
-          <UserCircle className="h-5 w-5" />
+        <div className="ml-1">
+          <UserMenu />
         </div>
       </div>
     </header>

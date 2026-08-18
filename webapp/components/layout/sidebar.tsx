@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
+import { CopyrightNotice } from "@/components/layout/copyright-notice";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -58,8 +59,11 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           );
         })}
       </nav>
-      <div className="px-5 py-4 text-xs text-[rgb(var(--text-muted))]">
-        Built for Product Managers, BAs, POs &amp; QA.
+      <div className="space-y-1.5 px-5 py-4">
+        <p className="text-xs text-[rgb(var(--text-muted))]">
+          Built for Product Managers, BAs, POs &amp; QA.
+        </p>
+        <CopyrightNotice />
       </div>
     </div>
   );

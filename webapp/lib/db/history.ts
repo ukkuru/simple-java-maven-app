@@ -10,6 +10,7 @@ function titleFromUserStory(userStory: string): string {
 }
 
 export async function saveAnalysis(params: {
+  userId: string;
   userStory: string;
   acceptanceCriteria: string;
   framework: Framework;
@@ -18,6 +19,7 @@ export async function saveAnalysis(params: {
 }): Promise<AnalysisRecord> {
   const record = await prisma.analysis.create({
     data: {
+      userId: params.userId,
       title: titleFromUserStory(params.userStory),
       framework: params.framework,
       userStory: params.userStory,
@@ -30,16 +32,17 @@ export async function saveAnalysis(params: {
   return toAnalysisRecord(record);
 }
 
-export async function listAnalyses(limit = 50): Promise<AnalysisRecord[]> {
+export async function listAnalyses(userId: string, limit = 50): Promise<AnalysisRecord[]> {
   const records = await prisma.analysis.findMany({
+    where: { userId },
     orderBy: { createdAt: "desc" },
     take: limit,
   });
   return records.map(toAnalysisRecord);
 }
 
-export async function getAnalysis(id: string): Promise<AnalysisRecord | null> {
-  const record = await prisma.analysis.findUnique({ where: { id } });
+export async function getAnalysis(id: string, userId: string): Promise<AnalysisRecord | null> {
+  const record = await prisma.analysis.findFirst({ where: { id, userId } });
   return record ? toAnalysisRecord(record) : null;
 }
 

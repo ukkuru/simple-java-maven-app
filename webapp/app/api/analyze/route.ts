@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/options";
 import { analyzeRequestSchema } from "@/lib/validation/analyze";
 import { getAnalysisProvider, AnalysisProviderError } from "@/lib/ai";
 import { saveAnalysis } from "@/lib/db/history";
@@ -12,6 +14,11 @@ function clientKey(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    return NextResponse.json({ error: "You must be signed in to analyze a user story." }, { status: 401 });
+  }
+
   const limitPerMinute = Number(process.env.ANALYZE_RATE_LIMIT_PER_MINUTE || 20);
   const rate = checkRateLimit(`analyze:${clientKey(req)}`, limitPerMinute);
   if (!rate.allowed) {
@@ -43,6 +50,7 @@ export async function POST(req: NextRequest) {
     const result = await provider.analyze({ userStory, acceptanceCriteria, framework });
 
     const saved = await saveAnalysis({
+      userId: session.user.id,
       userStory,
       acceptanceCriteria,
       framework,

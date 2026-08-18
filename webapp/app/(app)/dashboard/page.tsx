@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { FileText, Gauge, TrendingUp, Sparkles } from "lucide-react";
+import { authOptions } from "@/lib/auth/options";
 import { listAnalyses } from "@/lib/db/history";
 import { buttonVariants } from "@/components/ui/button";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -8,7 +11,10 @@ import { HistoryList } from "@/components/dashboard/history-list";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const records = await listAnalyses(100);
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+
+  const records = await listAnalyses(session.user.id, 100);
 
   if (records.length === 0) {
     return (

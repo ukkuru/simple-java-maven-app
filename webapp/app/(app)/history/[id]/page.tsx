@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { ArrowLeft } from "lucide-react";
+import { authOptions } from "@/lib/auth/options";
 import { getAnalysis } from "@/lib/db/history";
 import { ResultsDashboard } from "@/components/dashboard/results-dashboard";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +11,10 @@ import { formatDate } from "@/lib/utils/date";
 export const dynamic = "force-dynamic";
 
 export default async function HistoryDetailPage({ params }: { params: { id: string } }) {
-  const record = await getAnalysis(params.id);
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+
+  const record = await getAnalysis(params.id, session.user.id);
   if (!record) notFound();
 
   return (

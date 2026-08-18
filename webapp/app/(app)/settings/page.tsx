@@ -1,5 +1,10 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/options";
+import { prisma } from "@/lib/db/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MarketingToggle } from "@/components/auth/marketing-toggle";
 import { SMART_CRITERIA, INVEST_CRITERIA, SCORE_BANDS, SCORING_EXPLANATION } from "@/lib/scoring/config";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +40,15 @@ function WeightTable({ title, criteria }: { title: string; criteria: { name: str
   );
 }
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { email: true, name: true, marketingOptIn: true, passwordHash: true },
+  });
+
   const provider = (process.env.AI_PROVIDER || "heuristic").toLowerCase();
   const model = process.env.AI_MODEL || "(default)";
   const configured = provider === "heuristic" || Boolean(process.env.AI_API_KEY);
@@ -45,9 +58,37 @@ export default function SettingsPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
         <p className="mt-1 text-sm text-[rgb(var(--text-muted))]">
-          Analysis engine configuration and scoring methodology.
+          Account, analysis engine configuration, and scoring methodology.
         </p>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Account</CardTitle>
+          <CardDescription>Your sign-in details and communication preferences.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-[rgb(var(--text-muted))]">Email</span>
+            <span className="font-medium">{user?.email}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-[rgb(var(--text-muted))]">Sign-in method</span>
+            <Badge tone="neutral">{user?.passwordHash ? "Email and password" : "Google"}</Badge>
+          </div>
+          <div className="my-1 h-px bg-[rgb(var(--border))]" />
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium">Marketing emails</p>
+              <p className="text-xs text-[rgb(var(--text-muted))]">
+                Product updates and marketing communications from Testmetry.com, sent to your
+                account email address.
+              </p>
+            </div>
+            <MarketingToggle initialValue={user?.marketingOptIn ?? false} />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
