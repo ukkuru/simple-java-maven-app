@@ -11,11 +11,29 @@ import { JsonLd } from "@/components/marketing/json-ld";
 import { WhatsAppButton } from "@/components/marketing/whatsapp-button";
 import { ORG, SITE_URL } from "@/lib/seo/site";
 
+const OG_TITLE = "Try QPulse Free: Review User Stories in Minutes";
+const OG_DESCRIPTION =
+  "Identify user story issues before they become defects. Get a quality score and improve them. Completely free.";
+
 export const metadata: Metadata = {
   title: "User Story Quality Analyzer | INVEST and SMART Scoring",
   description:
     "Paste any user story and get an instant quality score against INVEST and SMART, plus the exact rewrite and acceptance criteria generated for you if you skipped them. Free to try.",
   alternates: { canonical: `${SITE_URL}/` },
+  openGraph: {
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    url: `${SITE_URL}/`,
+    siteName: "QPulse",
+    type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "QPulse user story quality score" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
 
 const SOFTWARE_APPLICATION_SCHEMA = {
@@ -67,7 +85,7 @@ const INVEST_ITEMS = [
 ];
 
 const STEPS = [
-  { title: "Paste", body: "Drop in a user story and its acceptance criteria — or just the story if you haven’t written criteria yet." },
+  { title: "Paste", body: "Drop in a user story and its acceptance criteria. Or just the story, if you haven’t written the criteria yet." },
   { title: "Score", body: "QPulse checks it against INVEST and SMART and shows which criteria failed and why." },
   { title: "Rewrite", body: "Take the suggested version, or edit it and re score until it clears." },
 ];
@@ -119,13 +137,13 @@ export default async function HomePage() {
               <li className="flex items-start gap-2">
                 <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" />
                 <span>
-                  <strong>Valuable</strong> &mdash; &ldquo;use the app&rdquo; is not a benefit.
+                  <strong>Valuable:</strong> &ldquo;use the app&rdquo; is not a real benefit.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" />
                 <span>
-                  <strong>Testable</strong> &mdash; nothing here converts into a test case.
+                  <strong>Testable:</strong> nothing here can become a test case.
                 </span>
               </li>
             </ul>
@@ -159,8 +177,9 @@ export default async function HomePage() {
             arguing about what &ldquo;log in&rdquo; was supposed to include.
           </p>
           <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-            The story was never the problem. The story was vague, and vague reads as agreement. Ambiguity
-            does not announce itself. It looks exactly like consensus right up until someone writes code.
+            The story was never the problem. It was vague, and vague reads as agreement. A story that
+            isn&rsquo;t clear doesn&rsquo;t look unclear. It looks exactly like everyone agreeing, right
+            up until someone writes the code.
           </p>
           <ul className="mt-8 grid gap-4 sm:grid-cols-3">
             {PROBLEM_BULLETS.map((bullet) => (
@@ -178,18 +197,18 @@ export default async function HomePage() {
           User story INVEST criteria, scored line by line
         </h2>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          INVEST &mdash; Independent, Negotiable, Valuable, Estimable, Small, Testable &mdash; has been the
-          standard for good stories since Bill Wake{" "}
+          INVEST stands for Independent, Negotiable, Valuable, Estimable, Small, and Testable. It has been
+          the standard for good stories since Bill Wake{" "}
           <Link href="/faq#what-are-the-invest-criteria" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
             wrote the INVEST criteria
           </Link>{" "}
           in 2003. Every agile coach can recite them. Almost no team applies them consistently, because
-          applying them by hand to forty stories in a refinement session is not realistic.
+          checking forty stories by hand in one refinement session is not realistic.
         </p>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          QPulse runs the INVEST criteria against your story in seconds and shows you the result per
-          letter, not as one vague number. QPulse also scores against SMART for acceptance criteria, so
-          you get both the shape of the story and the sharpness of the conditions attached to it.
+          QPulse checks your story against INVEST in seconds and shows you the result letter by letter,
+          not as one vague number. It also scores your acceptance criteria against SMART, so you see how
+          solid the story is and how clear its conditions are.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -233,12 +252,12 @@ export default async function HomePage() {
                 &ldquo;As a user, I want to be able to log in so that I can use the app.&rdquo;
               </p>
               <ul className="mt-4 space-y-2 text-sm">
-                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Independent &mdash; Pass</li>
-                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Negotiable &mdash; Pass</li>
-                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Valuable &mdash; Fail. &ldquo;Use the app&rdquo; is not a benefit.</li>
-                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Estimable &mdash; Fail. No auth method, error states, or session handling.</li>
-                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Small &mdash; Pass</li>
-                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Testable &mdash; Fail. Nothing here converts into a test case.</li>
+                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Independent: Pass</li>
+                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Negotiable: Pass</li>
+                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Valuable: Fail. &ldquo;Use the app&rdquo; is not a real benefit.</li>
+                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Estimable: Fail. No auth method, error states, or session handling.</li>
+                <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-500" /> Small: Pass</li>
+                <li className="flex gap-2"><XCircle className="mt-0.5 h-4 w-4 shrink-0 text-danger-500" /> Testable: Fail. Nothing here turns into a test case.</li>
               </ul>
             </Card>
 
@@ -271,8 +290,8 @@ export default async function HomePage() {
           </div>
 
           <p className="mt-6 text-sm text-[rgb(var(--text-muted))]">
-            Same feature. One of them starts an argument in sprint planning. The other one gets built —
-            and QPulse writes that second version for you.
+            Same feature. One of them starts an argument in sprint planning. The other one gets built.
+            QPulse writes that second version for you.
           </p>
         </div>
       </section>
@@ -301,9 +320,10 @@ export default async function HomePage() {
           </h2>
           <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
             A story with no acceptance criteria at all is common, and it&rsquo;s what most &ldquo;story
-            generator&rdquo; tools quietly ignore. Leave that field blank in QPulse and the analyzer
-            drafts a happy-path scenario and a complementary invalid-input scenario for you, in
-            Given/When/Then form, so testability isn&rsquo;t resting on an example you never wrote.
+            generator&rdquo; tools quietly ignore. Leave that field blank in QPulse and it drafts two
+            scenarios for you in Given/When/Then form: one where things go right, and one where they
+            don&rsquo;t. That way your story is testable even before you&rsquo;ve written a single test
+            case.
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <Card className="p-6">
@@ -369,14 +389,14 @@ export default async function HomePage() {
           Requirements quality is measurable. Most teams just never measure it.
         </h2>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          Every other part of your delivery pipeline has a gate. Code has review. Builds have tests.
-          Deploys have checks. The requirement, which is the input to all of it, goes through on a nod in
-          a thirty minute meeting.
+          Every other part of your delivery pipeline has a gate. Code gets reviewed. Builds get tested.
+          Deploys get checked. The requirement, which everything else depends on, gets waved through in a
+          thirty minute meeting.
         </p>
         <p className="mt-4 max-w-3xl text-[rgb(var(--text-muted))]">
-          QPulse gives that input a number. Not to gatekeep your team, but so that &ldquo;this story is not
-          ready&rdquo; stops being one person&rsquo;s opinion and starts being something you can point at
-          &mdash; the same standard behind the{" "}
+          QPulse gives that requirement a number. Not to gatekeep your team, but so &ldquo;this story
+          isn&rsquo;t ready&rdquo; stops being one person&rsquo;s opinion and becomes something you can
+          point at. That&rsquo;s the same standard behind the{" "}
           <Link href="/faq#what-is-the-definition-of-ready-in-agile" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
             Definition of Ready in agile
           </Link>

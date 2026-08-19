@@ -17,73 +17,73 @@ const FAQ_ITEMS: { id: string; question: string; answer: string }[] = [
     id: "what-is-the-definition-of-ready-in-agile",
     question: "What is the Definition of Ready in agile?",
     answer:
-      "The Definition of Ready in agile is the shared standard a backlog item has to meet before a team will pull it into a sprint. It is the entry gate. A workable Definition of Ready says the story has a clear user and outcome, has acceptance criteria attached, has no unresolved dependency blocking it, is small enough to finish inside one sprint, and has been sized by the people who will build it.",
+      "The Definition of Ready in agile is the standard a backlog item has to meet before a team pulls it into a sprint. Think of it as the entry gate. A good Definition of Ready says the story has a clear user and a clear outcome. It has acceptance criteria attached. Nothing is blocking it. It is small enough to finish in one sprint. And the people who will build it have already sized it.",
   },
   {
     id: "definition-of-ready-vs-definition-of-done",
     question: "Definition of Ready vs Definition of Done: what is the difference?",
     answer:
-      "The Definition of Ready is the entry gate and asks whether a story is clear enough to start. The Definition of Done is the exit gate and asks whether the work is finished enough to release. Definition of Done vs Definition of Ready is a question of direction: DoD looks at code, tests, documentation and deployment; DoR looks at clarity, sizing, dependencies and acceptance criteria. Most teams have a documented Definition of Done and an unspoken Definition of Ready — that asymmetry is why so much rework happens.",
+      "The Definition of Ready is the entry gate. It asks if a story is clear enough to start. The Definition of Done is the exit gate. It asks if the work is finished enough to release. So Definition of Done vs Definition of Ready comes down to direction: DoD checks code, tests, docs, and deployment. DoR checks clarity, sizing, dependencies, and acceptance criteria. Most teams write down their Definition of Done but never write down their Definition of Ready. That gap is where a lot of rework starts.",
   },
   {
     id: "what-goes-on-a-definition-of-ready-checklist",
     question: "What goes on a Definition of Ready checklist?",
     answer:
-      "Here is a Definition of Ready checklist example you can copy straight into your team wiki: the story names a specific user, not “a user”; the story states an outcome, not a mechanism; acceptance criteria are attached and written as testable conditions; every dependency is either resolved or explicitly noted; the team has sized it and the size fits inside one sprint; someone other than the author has read it and understood it the same way; and QA can write at least one passing and one failing test case from it. That last line does more work than the other six combined.",
+      "Here is a Definition of Ready checklist example you can copy into your team wiki. The story names a real user, not just “a user.” It states an outcome, not a mechanism. Acceptance criteria are attached and written as testable conditions. Every dependency is resolved or written down. The team has sized it, and it fits in one sprint. Someone other than the author has read it and understood it the same way. And QA can write at least one passing and one failing test case from it. That last line does more work than the other six put together.",
   },
   {
     id: "what-are-the-invest-criteria",
     question: "What are the INVEST criteria?",
     answer:
-      "INVEST is an acronym for the six properties of a good user story: Independent, Negotiable, Valuable, Estimable, Small, Testable. Bill Wake introduced them in 2003 and they have outlasted most of what came after. Independent means it can ship alone. Negotiable means it describes the what, not the how. Valuable means someone is measurably better off. Estimable means the team has enough detail to size it. Small means it fits a sprint. Testable means a pass or fail condition exists.",
+      "INVEST is an acronym for six things a good user story should be: Independent, Negotiable, Valuable, Estimable, Small, Testable. Bill Wake introduced them in 2003, and they have outlasted most of what came after. Independent means it can ship on its own. Negotiable means it describes the what, not the how. Valuable means someone is clearly better off. Estimable means the team has enough detail to size it. Small means it fits in a sprint. Testable means there is a clear pass or fail condition.",
   },
   {
     id: "how-do-i-know-if-my-user-story-is-any-good",
     question: "How do I know if my user story is any good?",
     answer:
-      "Read it out loud and ask three questions: who specifically benefits, what changes for them, and how would we prove it works. If you cannot answer all three from the story text alone, the story is carrying meaning in someone's head instead of on the card — meaning that does not survive a two week sprint or a handover. The formal version of this test is the INVEST criteria plus SMART acceptance criteria, which is exactly what QPulse automates.",
+      "Read it out loud and ask three questions. Who specifically benefits? What changes for them? How would we prove it works? If you can't answer all three from the story text alone, the story is relying on something in your head instead of on the card. That kind of meaning does not survive a two-week sprint or a handover to someone new. The formal version of this test is the INVEST criteria plus SMART acceptance criteria, which is exactly what QPulse checks for you.",
   },
   {
     id: "what-are-good-acceptance-criteria-for-a-login-page",
     question: "What are good acceptance criteria for a login page?",
     answer:
-      "Acceptance criteria for a login page trip up more teams than almost any other feature, because everyone assumes login is obvious. It is not. A set that holds up covers: a registered user with a verified email entering correct credentials reaches their dashboard with an active session; a registered user entering an incorrect password sees an error that does not reveal whether the email exists; a registered user who fails authentication five times in ten minutes gets locked out with a reset email sent; an unverified account entering correct credentials sees a prompt to verify with a resend option; and a logged in user whose session exceeds thirty minutes of inactivity is signed out and returned to login. Notice what is covered beyond the happy path: error messaging that does not leak account existence, rate limiting, unverified state, and session expiry. A login story that only covers the happy path is roughly twenty percent of the actual work.",
+      "Acceptance criteria for a login page trip up more teams than almost any other feature, because everyone assumes login is obvious. It isn't. A solid set covers more than the happy path. A registered user with a verified email who enters the right credentials should land on their dashboard with an active session. A registered user who enters the wrong password should see an error that doesn't reveal whether the email exists at all. A user who fails five login attempts in ten minutes should get locked out, with a reset email sent automatically. An unverified account with correct credentials should see a prompt to verify, with an option to resend. And a logged-in user whose session sits idle for thirty minutes should get signed out and sent back to login. Notice what that covers beyond the happy path: error messages that don't leak account details, rate limiting, unverified accounts, and session timeouts. A login story that only covers the happy path is about twenty percent of the real work.",
   },
   {
     id: "what-is-gherkin-and-when-should-i-use-it-for-acceptance-criteria",
     question: "What is Gherkin and when should I use it for acceptance criteria?",
     answer:
-      "Gherkin is the Given, When, Then syntax used by behaviour driven development tools like Cucumber and SpecFlow. Given sets the starting state, When names the action, Then states the expected result. Gherkin acceptance criteria are worth using when the behaviour has conditions, states, or edge cases, which is most of the time; they are overkill for a copy change or a colour tweak. The real benefit is not the tooling — it is that Gherkin makes vagueness impossible to hide. You cannot write “Then the system handles it appropriately” and keep a straight face.",
+      "Gherkin is the Given, When, Then format used by behavior-driven tools like Cucumber and SpecFlow. Given sets the starting state, When names the action, and Then states what should happen. Use Gherkin acceptance criteria whenever the behavior has conditions, states, or edge cases, which is most of the time. It's overkill for a copy change or a color tweak. The real value isn't the format itself. It's that Gherkin makes it hard to hide vague thinking. You can't write “Then the system handles it appropriately” in Given/When/Then form and still sound specific.",
   },
   {
     id: "is-there-an-acceptance-criteria-checklist-i-can-use",
     question: "Is there an acceptance criteria checklist I can use?",
     answer:
-      "Yes. Run every acceptance criterion through these seven checks: it describes one behaviour, not several stitched together; it is written from the user's perspective, not the system's; it has a clear pass or fail outcome with no interpretation needed; it avoids “should,” “appropriately,” “properly,” and “as expected”; it names the starting state, not just the action; it covers at least one failure path, not only the happy path; and someone who did not attend the refinement meeting could test it correctly. That last check is the honest one.",
+      "Yes. Check every acceptance criterion against these seven things. Does it describe one behavior, not several stitched together? Is it written from the user's point of view, not the system's? Does it have a clear pass or fail outcome, with no room for interpretation? Does it avoid vague words like “should,” “appropriately,” “properly,” and “as expected”? Does it name the starting state, not just the action? Does it cover at least one failure case, not only the happy path? And could someone who wasn't in the refinement meeting test it correctly? That last one is the honest test.",
   },
   {
     id: "how-is-smart-different-from-invest",
     question: "How is SMART different from INVEST?",
     answer:
-      "INVEST evaluates the story. SMART evaluates the acceptance criteria attached to it. A story can be perfectly INVEST compliant and still ship the wrong thing because its criteria were mushy. The reverse also happens: razor sharp criteria bolted onto a story so large that nobody can estimate it. You need both, which is why QPulse scores against both rather than picking a side.",
+      "INVEST checks the story itself. SMART checks the acceptance criteria attached to it. A story can pass every INVEST check and still ship the wrong thing because its criteria were mushy. The opposite happens too: sharp, specific criteria bolted onto a story so big nobody can estimate it. You need both checks, which is why QPulse scores against both instead of picking one.",
   },
   {
     id: "do-you-have-a-user-story-template-for-jira-or-confluence",
     question: "Do you have a user story template for Jira or Confluence?",
     answer:
-      "Yes, and a warning that comes with it. A Jira user story template gives you consistent fields: user, action, outcome, acceptance criteria, dependencies, sizing. A Confluence user story template gives you the same structure with more room for context and links to designs or specs. Here is the warning: a template enforces structure, not quality — a team using a perfect template will produce perfectly formatted stories that still fail four of the six INVEST criteria. Use the template for consistency. Use a scoring check for quality, not just structure.",
+      "Yes, with a warning attached. A Jira user story template gives you consistent fields: user, action, outcome, acceptance criteria, dependencies, sizing. A Confluence user story template gives you the same structure with more room for context and links to designs. Here's the warning: a template enforces structure, not quality. A team using a perfect template can still produce stories that fail four of the six INVEST criteria, just neatly formatted. Use the template for consistency. Use a scoring check for actual quality.",
   },
   {
     id: "does-this-work-with-safe",
     question: "Does this work with SAFe?",
     answer:
-      "Yes. A SAFe user story template follows the same “as a, I want, so that” structure, with extra context for the enabler and feature layers above it and links up to the programme increment. SAFe raises the stakes on story quality rather than changing the rules — when a single unclear story is one of two hundred in a programme increment, the cost of ambiguity multiplies across every team in the train.",
+      "Yes. A SAFe user story template follows the same “as a, I want, so that” structure, with extra context for the enabler and feature layers above it and links up to the program increment. SAFe raises the stakes on story quality rather than changing the rules. When one unclear story sits among two hundred others in a program increment, the cost of that ambiguity multiplies across every team in the train.",
   },
   {
     id: "will-this-replace-refinement",
     question: "Will this replace refinement?",
     answer:
-      "No, and be suspicious of any tool that claims it will. Refinement is where a team builds shared understanding — that conversation is the value, not the ticket that comes out of it. What QPulse removes is the first fifteen minutes of every refinement session, the part where everyone silently reads a vague story and slowly realises they read it differently.",
+      "No, and you should be suspicious of any tool that claims it will. Refinement is where a team builds shared understanding, and that conversation is the real value, not the ticket that comes out of it. What QPulse removes is the first fifteen minutes of every refinement session, the part where everyone silently reads a vague story and slowly realizes they each read it differently.",
   },
 ];
 
@@ -121,9 +121,9 @@ export default function FaqPage() {
           User story and acceptance criteria questions, answered
         </h1>
         <p className="mt-4 text-[rgb(var(--text-muted))]">
-          Straight answers to the questions BAs, QA engineers and developers actually ask about story
-          quality. No theory detours. Every answer has a worked example, and where a check can be
-          automated, we say so.
+          Straight answers to the questions BAs, QA engineers, and developers actually ask about story
+          quality. No theory detours. Every answer has a real example, and if QPulse can check it
+          automatically, we say so.
         </p>
 
         <div className="mt-10 space-y-10">
@@ -156,15 +156,15 @@ export default function FaqPage() {
               )}
               {item.id === "what-is-gherkin-and-when-should-i-use-it-for-acceptance-criteria" && (
                 <p className="mt-3 text-sm">
-                  QPulse validates Gherkin structure and flags conditions that are not actually testable
-                  &mdash; and{" "}
+                  QPulse checks your Gherkin structure and flags conditions that aren&rsquo;t actually
+                  testable. If you didn&rsquo;t write any,{" "}
                   <Link
                     href="/#acceptance-criteria-generator"
                     className="font-medium text-brand-600 hover:underline dark:text-brand-400"
                   >
-                    writes a full Given/When/Then scenario pair
+                    it writes a full Given/When/Then scenario pair
                   </Link>{" "}
-                  if you didn&rsquo;t provide any.
+                  for you.
                 </p>
               )}
               {item.id === "do-you-have-a-user-story-template-for-jira-or-confluence" && (
@@ -195,10 +195,9 @@ export default function FaqPage() {
           <div id="do-i-need-an-account" className="scroll-mt-20">
             <h2 className="text-xl font-bold tracking-tight">14. Do I need an account?</h2>
             <p className="mt-3 text-[rgb(var(--text-muted))]">
-              Yes, and it is free. No credit card, no trial clock, no sales call. The account exists
-              because scoring one story in isolation is not the point &mdash; QPulse saves every score you
-              run, so you can see whether your team&rsquo;s story quality is actually moving. Setup takes
-              about twenty seconds.{" "}
+              Yes, and it is free. No credit card, no trial clock, no sales call. Scoring one story on its
+              own isn&rsquo;t really the point. QPulse saves every score you run, so you can see whether
+              your team&rsquo;s story quality is actually improving. Setup takes about twenty seconds.{" "}
               <Link href="/login" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
                 Sign in
               </Link>{" "}

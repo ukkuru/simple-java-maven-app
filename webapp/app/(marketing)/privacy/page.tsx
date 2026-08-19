@@ -53,16 +53,16 @@ export default function PrivacyPage() {
             <p className="mt-3 text-[rgb(var(--text-muted))]">We collect three categories of data:</p>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-[rgb(var(--text-muted))]">
               <li>
-                <strong>Account data</strong> &mdash; your email address, name (if provided), and a hashed
+                <strong>Account data</strong>: your email address, name (if provided), and a hashed
                 password if you register with email and password. If you sign in with Google, we receive
                 your name, email address and profile image from Google.
               </li>
               <li>
-                <strong>Content data</strong> &mdash; the user stories and acceptance criteria you submit
+                <strong>Content data</strong>: the user stories and acceptance criteria you submit
                 for analysis, and the scores, issues and rewrites QPulse generates from them.
               </li>
               <li>
-                <strong>Usage data</strong> &mdash; the pages you visit, timestamps of activity such as
+                <strong>Usage data</strong>: the pages you visit, timestamps of activity such as
                 sign-ins and analyses run, and your IP address as recorded in standard server logs.
               </li>
             </ul>
@@ -121,15 +121,15 @@ export default function PrivacyPage() {
             <p className="mt-3 text-[rgb(var(--text-muted))]">We share data with a small number of named processors, and no one else:</p>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-[rgb(var(--text-muted))]">
               <li>
-                <strong>Anthropic</strong> &mdash; only your story text, and only if this deployment has
+                <strong>Anthropic</strong>: only your story text, and only if this deployment has
                 AI-assisted mode enabled (Section 4).
               </li>
               <li>
-                <strong>Google</strong> &mdash; only if you choose to sign in with Google, to authenticate
+                <strong>Google</strong>: only if you choose to sign in with Google, to authenticate
                 you.
               </li>
               <li>
-                <strong>Our hosting provider</strong> &mdash; to run the servers QPulse operates on. We do
+                <strong>Our hosting provider</strong>: to run the servers QPulse operates on. We do
                 not currently use a third-party analytics or email-delivery service.
               </li>
             </ul>
